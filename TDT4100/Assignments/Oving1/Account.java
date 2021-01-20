@@ -1,4 +1,3 @@
-
 package stateandbehavior;
 
 	public class Account {
@@ -7,49 +6,49 @@ package stateandbehavior;
 	public double interestRate;
 	
 	
-	public void deposit(double balance) {
+	public double deposit(double balance) {
 		if (balance >= 0)
 		this.balance += balance;
-		System.out.println("Your current balance is: " + balance);
+		return balance;
 		
 	}
         
 	
-	public void setBalance(double balance) {
-		this.balance = balance;
-	}
 
-
-
-	public double addInterest() {
+	public void addInterest() {
 		this.balance += (interestRate / 100) * this.balance;
-		return this.balance;
+		
 		
 		
 	}
 	
 	
 	public double getBalance() {
-		System.out.println("Your new balance with interests are : " + this.balance);
 		return this.balance;
 		
 	}
 	
 	public double getInterestRate() {
-		System.out.println("Your current interest rate is: " + this.interestRate + "%");
 		return this.interestRate;
 	}
 	
 	
 	public double setInterestRate(double interestRate) {
-		return this.interestRate = interestRate;
+		 return this.interestRate = interestRate;
 	
 		
 	}
-
+@Override
+	public String toString() {
+		return "Displays the amount you currently have in your account: " + getBalance() + " lets you deposit money into it, new balance: " + deposit(1000) + " and add interest, your interest rate is:  " + setInterestRate(5.0);
+	}
+	
 	public static void main(String[] args) {
 		Account account = new Account();
-		account.getBalance();
+		account.setInterestRate(5.0);
+
+		System.out.println(account);
+		
 	
 	}
 
