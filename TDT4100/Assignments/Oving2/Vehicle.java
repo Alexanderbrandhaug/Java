@@ -12,6 +12,9 @@ public class Vehicle {
 		this.typeOfVehicle = typeOfVehicle;
 		this.typeOfFuel = typeOfFuel;
 		this.licensePlate = licensePlate;
+		getVehicleType();
+		getFuelType();
+		setRegistrationNumber(licensePlate);
 	}
 	public char getVehicleType() {
 		if (this.typeOfVehicle == 'M') {
