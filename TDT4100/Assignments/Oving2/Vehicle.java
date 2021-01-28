@@ -15,7 +15,11 @@ public class Vehicle {
 		getVehicleType();
 		getFuelType();
 		setRegistrationNumber(licensePlate);
+		
 	}
+	
+	
+	
 	public char getVehicleType() {
 		if (this.typeOfVehicle == 'M') {
 			return 'M';
@@ -53,42 +57,47 @@ public class Vehicle {
    
    
    
-   public String setRegistrationNumber(String licensePlate) {
-	   this.licensePlate = licensePlate;
-	   String randomSub = licensePlate.substring(0,2);
-	   String prefixReg = "EL";
-	   String prefixReg2 = "EK";
-	   String prefixH = "HY";
+	   public void setRegistrationNumber(String licensePlate) {
+		   String randomSub = licensePlate.substring(0,2);
+		   String prefixReg = "EL";
+		   String prefixReg2 = "EK";
+		   String prefixH = "HY";
 	   
-	   if (getVehicleType() == 'M' && (getFuelType() == 'G' || getFuelType() == 'D')) {
+	   if (getVehicleType() == 'M' && licensePlate.length() == 6 && (getFuelType() == 'G' || getFuelType() == 'D')) {
 		   checkLicenseMotorcycle(licensePlate);
-		   return licensePlate;
+		   this.licensePlate = licensePlate;
+		   return;
 	   }
 	   
 	  if (getVehicleType() == 'M' && getFuelType() == 'E' && ((randomSub.equals(prefixReg) || randomSub.equals(prefixReg2)) && licensePlate.length() == 6)) {
-		  return licensePlate;
+		  this.licensePlate = licensePlate;
+		  return;
 	  }
 	   
 	   
 	   if (getVehicleType() == 'C' && getFuelType() == 'E' && (randomSub.equals(prefixReg) || randomSub.equals(prefixReg2))&& licensePlate.length() == 7)  {
-		   return licensePlate;
+		   this.licensePlate = licensePlate;
+		   return;
 		   
 		   
 	   }
         
 	   if(getVehicleType() == 'C' && getFuelType() == 'H' && randomSub.equals(prefixH) && licensePlate.length() == 7) {
-		   return licensePlate;
+		   this.licensePlate = licensePlate;
+		   return;
 	   }
 	   
 	   if(getVehicleType() == 'C' && (getFuelType() == 'G' || getFuelType() == 'D')) {
 		   checkLicenseCar(licensePlate);
-		   return licensePlate;
+		   System.out.println("test");
+		   this.licensePlate = licensePlate;
+		   return;
 		   
 	   
    }
 	   
-	   else 
-		  throw new IllegalArgumentException();
+	   else {
+		  throw new IllegalArgumentException();}
   
    
    
@@ -97,10 +106,11 @@ public class Vehicle {
    }
 	   
 	   public static String checkLicenseCar(String licensePlate) {
-		   boolean test = Pattern.matches("[A-Z]{2}[0-9]{5}", licensePlate);
+		   boolean test = Pattern.matches("^[A-Z]{2}[0-9]{5}$", licensePlate);
 		  
 		  
-		   if (test == true && (licensePlate.startsWith("EL") == false && licensePlate.startsWith("EK") == false && licensePlate.startsWith("HY") == false)) {
+		   if (test == true && (licensePlate.startsWith("EL") == false) && (licensePlate.startsWith("EK") == false) && (licensePlate.startsWith("HY") == false)){
+			   System.out.println("testlicense");
 			   return licensePlate;
 		   }
 		   else
@@ -114,28 +124,29 @@ public class Vehicle {
     	  
     	  if (test1 == true && (licensePlate.startsWith("EL") == false && licensePlate.startsWith("EK") == false && licensePlate.startsWith("HY") == false))  {
     			  return licensePlate;}
-      else
-    	  throw new IllegalArgumentException();
+    	  else
+    		  throw new IllegalArgumentException();
       }
 	   
+		  
+		  
+		  
+		  
+		  
 
-   public String getRegistrationNumber() {
-	   return this.licensePlate;
+		  public String getRegistrationNumber() {
+			  System.out.println("Regnr: " + licensePlate);
+			  return this.licensePlate;
    }
 
-  
-  @Override
-public String toString() {
-	return "Kjøretøy: " + getVehicleType()+ " Drivstoff: " + getFuelType() + " Regnr: " + setRegistrationNumber("EK1234");
-}
    
-   
-
    
        public static void main(String[] args) {
 		Vehicle a = new Vehicle('C', 'G', "HA12345");
-		Vehicle b = new Vehicle ('M', 'D', "EK1234");
-		b.setRegistrationNumber("EK12342");
+		Vehicle b = new Vehicle ('C', 'D', "BN12345");
+		
+		
+		b.getRegistrationNumber();
 		
 		System.out.println(b);
 	
