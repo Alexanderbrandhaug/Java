@@ -60,22 +60,22 @@ public class CardDeck {
 		public List<Card> shufflePerfectly() {
 			List <Card> test2 = new ArrayList<>();
 			
-			for (int i = 0; i < getCardCount()/2; i++) {
+			for (int i = 0, j = getCardCount()/2; i < getCardCount()/2; i++, j++) {
 				test2.add(cards.get(i));
-				
+				test2.add(cards.get(j));
+			}	
+				this.cards = test2;
+			
+				return test2;
 			}
-			for (int i = 0; i < getCardCount()/2; i++) {
-				test2.add(cards.get(i));
-			}
-				
-			return test2;
-			}
+			
+		
 
 		
-		
 		public static void main(String[] args) {
-			CardDeck test = new CardDeck(0);
-			System.out.println(test.cardCheck(13));
+			CardDeck test = new CardDeck(13);
+			//System.out.println(test.cardCheck(13));
 			System.out.println(test.shufflePerfectly());					
+			
 			}
 			}
