@@ -1,6 +1,10 @@
-
 package project_reservation;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +29,11 @@ import javafx.scene.text.Text;
 		private Reservation nybooking1;
 		private int ID;
 		private int priceController = 899;
-
-      @FXML private TextField inputLoadFile;
-      @FXML private TextField inputFilename;
-      @FXML private TextField inputName;
-      @FXML private TextField inputEmail;
+		 
+		@FXML private TextField inputLoadFile;
+		@FXML private TextField inputFilename;
+		@FXML private TextField inputName;
+		@FXML private TextField inputEmail;
 	    @FXML private TextField inputPhoneNum;
 	    @FXML private DatePicker inputFromDate;
 	    @FXML private DatePicker inputToDate;
@@ -50,6 +54,11 @@ import javafx.scene.text.Text;
 	    @FXML private TextField bookedtoField;
 	    @FXML private Text custCardId;
 	    @FXML private TextField priceCustInfo;
+	    
+	    Connection conn = null;
+	    ResultSet rs = null;
+	    PreparedStatement pst = null;
+	    int index = -1;
   
    
 	    
@@ -63,7 +72,19 @@ import javafx.scene.text.Text;
 	    colToDate.setCellValueFactory(new PropertyValueFactory<Reservation, LocalDate>("toDate"));
 	    colBookingId.setCellValueFactory(new PropertyValueFactory <Reservation, Integer> ("id"));
 	    priceColumn.setCellValueFactory(new PropertyValueFactory <Reservation, Integer> ("price"));
+	    try {
+			observableList = MySQLconnect.getBookings();
+			for(Reservation ele: observableList) {
+				ele.setPrice();
+				hotel.addBooking(ele);
+			}
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+				| NoSuchMethodException | SecurityException | ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	    tableview.setItems(observableList);
+	    
 
     
     }
@@ -93,6 +114,7 @@ import javafx.scene.text.Text;
 	    	throw new IllegalArgumentException("Please insert a valid customer ID");
 	    	
 	    }
+	    
 	    
 	    
 	    int inputIDasInt = Integer.parseInt(inputSearchField.getText());
@@ -183,6 +205,10 @@ import javafx.scene.text.Text;
     	Alertbox.display("Success", "Saved changes");
     	
     	
+    	
+    	System.out.println(observableList + "OBS LISTA ETTER SAVE");
+    	System.out.println(hotel.getAllBookings() + "HotellLISTA ETTER SAVE");
+    	
     	} catch (Exception e) {
     		Alertbox.display("Error!", e.getMessage());
     	}
@@ -195,6 +221,8 @@ import javafx.scene.text.Text;
 	 void bookNowBtn(ActionEvent event) {
     	 LocalDate dfrom = inputFromDate.getValue();
     	 LocalDate dto = inputToDate.getValue();
+    	 String dfrom1 = String.valueOf(dfrom);
+    	 String dto1 = String.valueOf(dto);
     	
     	 
     	 
@@ -213,6 +241,21 @@ import javafx.scene.text.Text;
     	  tableview.getItems().add(nybooking1);
     	  numOfBookingsField.setText(String.valueOf(observableList.size()));
     	  clearFields();
+
+    	  
+    	  conn = MySQLconnect.DBconnect();
+    	  String sql = "insert into booking (bookingID, name, email, phone, fromDate, toDate, price) values(?,?,?,?,?,?,?)";
+    	  pst = conn.prepareStatement(sql);
+    	  pst.setInt(1, nybooking1.getId());
+    	  pst.setString(2, nybooking1.getName());
+    	  pst.setString(3, nybooking1.getEmail());
+    	  pst.setString(4, nybooking1.getPhoneNumber());
+    	  pst.setString(5, dfrom1);
+    	  pst.setString(6, dto1);
+    	  pst.setInt(7, nybooking1.getPrice());
+    	  pst.execute();
+    	  
+    	  
     	
     	}
 
@@ -259,6 +302,7 @@ import javafx.scene.text.Text;
 			   hotel.clearList();
 			   numOfBookingsField.setText(String.valueOf(observableList.size()));
 			   
+			 
 			   } 
 			   
 			   catch(Exception e) {
@@ -302,7 +346,8 @@ import javafx.scene.text.Text;
 				   numOfBookingsField.setText(String.valueOf(observableList.size()));
 			
 				   Alertbox.display("Loading" ,  "Bookings successfully loaded from file: " + inputLoadFile.getText());
-				
+				 
+				   
 				  
 			
 		   } catch (Exception e) {
@@ -320,11 +365,13 @@ import javafx.scene.text.Text;
 				   }
 			   String f = inputSearchField.getText();
 			   int k = Integer.parseInt(f);  
+			   System.out.println("HOTELLLISTA NÅR DELETE TRYKKA" + hotel.getAllBookings());
 			   hotel.deleteBooking(k);	
+			   System.out.println("HOTELLLISTA ETTER DELETE TRYKKA" + hotel.getAllBookings());
 			   observableList.removeAll(observableList); 
 			   observableList.addAll(hotel.getAllBookings());
 			 
-		   
+//			   
 			   tableview.setItems(observableList);
 			   numOfBookingsField.setText(String.valueOf(observableList.size()));
 			   nameField.clear();
@@ -335,8 +382,10 @@ import javafx.scene.text.Text;
 			   inputSearchField.clear();
 			   priceCustInfo.clear();
 			   custCardId.setText("");
-			   
-			   
+			   Connection conn = MySQLconnect.DBconnect();
+			   String sql1 = "DELETE FROM booking WHERE bookingID = " + String.valueOf(k);
+			   pst = conn.prepareStatement(sql1);
+			   pst.execute();
 			  
 		    } catch(Exception e) {
 		    	Alertbox.display("Error!", e.getMessage());
