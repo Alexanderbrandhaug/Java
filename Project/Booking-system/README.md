@@ -5,4 +5,4 @@ Mind that the design of the GUI was not a part of the project, hence I spent ver
 
 For a demo of the App, you can take a quick look here: https://www.youtube.com/watch?v=uspo46p4cq8
 
-
+EDIT: Added MySQL DB and a login-screen for the sake of learning. This goes beyond the project requirements. 
