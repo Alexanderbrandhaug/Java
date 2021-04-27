@@ -1,4 +1,4 @@
-package project_reservation;
+package bookingsystem;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -10,6 +10,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -19,7 +21,9 @@ public class LoginController {
     private TextField usernameField;
 
     @FXML
-    private TextField passwordField;
+    private PasswordField passwordField;
+    @FXML
+    private Label invalidLogin;
     
     Connection conn = null;
     PreparedStatement pst = null;
@@ -49,14 +53,16 @@ public class LoginController {
 			pst.setString(2, passwordField.getText());
 			rs = pst.executeQuery();
 			if(rs.next()) {
+				invalidLogin.setVisible(false);
 				this.window1.close();
-				Alertbox.display("Success", "successfully logged in");
+				invalidLogin.setText("Successfully logged in");
+				invalidLogin.setVisible(true);
 				window2.show();
-			
+				
 	
 			}
     	else {
-				Alertbox.display("Failed", "password or username did not match");
+				invalidLogin.setVisible(true);
 			}
     	
 			
