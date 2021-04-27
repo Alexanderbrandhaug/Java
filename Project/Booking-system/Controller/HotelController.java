@@ -1,4 +1,4 @@
-package project_reservation;
+package bookingsystem;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.sql.Connection;
@@ -72,8 +72,10 @@ import javafx.scene.text.Text;
 	    colToDate.setCellValueFactory(new PropertyValueFactory<Reservation, LocalDate>("toDate"));
 	    colBookingId.setCellValueFactory(new PropertyValueFactory <Reservation, Integer> ("id"));
 	    priceColumn.setCellValueFactory(new PropertyValueFactory <Reservation, Integer> ("price"));
+	    
 	    try {
 			observableList = MySQLconnect.getBookings();
+			numOfBookingsField.setText(String.valueOf(observableList.size()));
 			for(Reservation ele: observableList) {
 				ele.setPrice();
 				hotel.addBooking(ele);
@@ -117,6 +119,10 @@ import javafx.scene.text.Text;
 	    
 	    
 	    
+//	   for(Reservation ele: observableList) {
+//			int inputIDasInt = Integer.parseInt(inputSearchField.getText());
+//			System.out.println(observableList + "obs lista når søk");
+//		   if(inputIDasInt == ele.getId()) {
 	    int inputIDasInt = Integer.parseInt(inputSearchField.getText());
 	    if(checkIfIdExists(inputIDasInt, observableList)) {
 	    
@@ -241,7 +247,8 @@ import javafx.scene.text.Text;
     	  tableview.getItems().add(nybooking1);
     	  numOfBookingsField.setText(String.valueOf(observableList.size()));
     	  clearFields();
-
+//    	  String toDate = String.valueOf(dto);
+//    	  String fromDate = String.valueOf(dfrom);
     	  
     	  conn = MySQLconnect.DBconnect();
     	  String sql = "insert into booking (bookingID, name, email, phone, fromDate, toDate, price) values(?,?,?,?,?,?,?)";
@@ -300,9 +307,10 @@ import javafx.scene.text.Text;
 			   inputFilename.clear();
 			   observableList.clear();
 			   hotel.clearList();
+//			   hotel.getAllBookings().clear();
 			   numOfBookingsField.setText(String.valueOf(observableList.size()));
 			   
-			 
+			   System.out.println("HOTELL LISTA NÅR SAVE KNAPP TRYKKA" + hotel.getAllBookings());
 			   } 
 			   
 			   catch(Exception e) {
@@ -346,7 +354,7 @@ import javafx.scene.text.Text;
 				   numOfBookingsField.setText(String.valueOf(observableList.size()));
 			
 				   Alertbox.display("Loading" ,  "Bookings successfully loaded from file: " + inputLoadFile.getText());
-				 
+				   System.out.println("HOTELL LISTA NÅR LOAD KNAPP TRYKKA" + hotel.getAllBookings());
 				   
 				  
 			
