@@ -21,8 +21,8 @@ public class MySQLconnect {
 	static String databaseName = "";
 	static String url = "jdbc:mysql://localhost:3306/bookings";
 	
-	static String username = "root";
-	static String password ="Kontor51fbi!";
+	static String username = "";
+	static String password ="";
 	
 	
 	public static Connection DBconnect() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException, SQLException {
