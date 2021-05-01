@@ -40,13 +40,13 @@ public class LoginController {
     
     @FXML
     void loginBtn(ActionEvent event) throws Exception {
-    	window1.setScene(new Scene(FXMLLoader.load(getClass().getResource("login.fxml"))));
-    	window2.setTitle("Booking-manager");
-    	window2.setScene(new Scene(FXMLLoader.load(getClass().getResource("Reservation1.fxml"))));
+    	
+    String sceneFile = "/fxml/Reservation1.fxml";
     	
     	
     	try {
 			conn = MySQLconnect.DBconnect();
+			System.out.println("Connection established");
 			String query = "SELECT * FROM users WHERE username=? and password = ?";
 			pst = conn.prepareStatement(query);
 			pst.setString(1, usernameField.getText());
@@ -57,7 +57,10 @@ public class LoginController {
 				this.window1.close();
 				invalidLogin.setText("Successfully logged in");
 				invalidLogin.setVisible(true);
-				window2.show();
+				window1.setScene(new Scene(FXMLLoader.load(getClass().getClassLoader().getResource("Reservation1.fxml"))));
+				window1.setResizable(false);
+		    	window1.setTitle("Booking-manager");
+				window1.show();
 				
 	
 			}
