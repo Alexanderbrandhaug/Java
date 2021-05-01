@@ -19,7 +19,7 @@ public class MySQLconnect {
 	
 	static Connection connection = null;
 	static String databaseName = "";
-	static String url = "jdbc:mysql://localhost:3306/bookings";
+	static String url = "jdbc:mysql://eu-cdbr-west-01.cleardb.com:3306/heroku_";
 	
 	static String username = "";
 	static String password ="";
